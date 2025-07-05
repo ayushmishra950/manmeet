@@ -32,6 +32,20 @@ const typeDefs = gql`
     imageUrl: String
     createdBy: ID
     createdAt: String
+    likes: [Like]
+    comments: [Comment]
+  }
+
+  type Like {
+    user: User
+    likedAt: String
+  }
+
+  type Comment {
+    id: ID!
+    text: String
+    user: User
+    commentedAt: String
   }
 
   type Query {
@@ -65,6 +79,7 @@ const typeDefs = gql`
     createPost(id: ID, caption: String!, image: Upload!): Post
     DeletePost(id: ID!) : String!
     LikePost(userId: ID!,postId: ID!) : String!
+    CommentPost(userId: ID!,postId: ID!, text:String!):[Comment]!
 
     editProfile(
       id: ID

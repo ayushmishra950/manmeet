@@ -154,8 +154,8 @@ const SocialPost = ({
   onDelete,
   onLike,
   isInitiallyLiked,
+  onComment
 }) => {
-  console.log(isInitiallyLiked);
   
   const [likes, setLikes] = useState(initialLikes);
   const [commentCount, setCommentCount] = useState(initialComments);
@@ -178,12 +178,15 @@ const SocialPost = ({
   };
 
   const handleCommentClick = () => {
+    
     setShowCommentInput(!showCommentInput);
   };
 
   const handleCommentSubmit = (e) => {
     e.preventDefault();
+
     if (newCommentText.trim()) {
+      onComment(newCommentText)
       setComments((prev) => [
         ...prev,
         { id: Date.now(), username: "You", text: newCommentText.trim() },

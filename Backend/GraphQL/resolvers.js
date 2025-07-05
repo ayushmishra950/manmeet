@@ -25,8 +25,12 @@ const resolvers = {
     users: async () =>
       await User.find().select('id name username email phone profileImage bio createTime'),
 
-    getAllPosts: async () =>
-      await Post.find().sort({ createdAt: -1 }),
+    getAllPosts: async () => {
+      return await Post.find()
+        .sort({ createdAt: -1 })
+        .populate("likes.user", "id name username profileImage")
+        .populate("comments.user", "id name username profileImage");
+    },
 
 //     getAllPosts: async () => {
 //   return await Post.find()
@@ -239,8 +243,33 @@ const resolvers = {
       const deletePost = await Post.findByIdAndDelete(id);
       return "DeletePost Successfully..."
     },
-    LikePost: async (_, { userId, postId }) => {
 
+     CommentPost : async (_, { userId, postId, text }) => {
+  if (!userId || !postId || !text.trim()) {
+    throw new Error("Missing fields");
+  }
+
+  // 1. Create new comment
+  const newComment = {
+    user: userId,
+    text,
+    commentedAt: new Date(),
+  };
+
+  // 2. Find post and push comment
+  const post = await Post.findById(postId);
+  if (!post) throw new Error("Post not found");
+
+  post.comments.push(newComment);
+  await post.save();
+
+  // await post.populate("comments.user");
+
+  return post.comments;
+},
+
+    LikePost: async (_, { userId, postId }) => {
+   
   if (!userId || !postId) {
     throw new Error("userId and postId are required");
   }
@@ -327,6 +356,43 @@ const resolvers = {
       const user = await User.findById(parent.id).populate("following");
       return user.following;
     },
+  },
+
+  // ✅ NEWLY ADDED: Post Resolvers for likes and comments
+  Post: {
+    likes: async (parent) => {
+      if (parent.likes) {
+        return parent.likes;
+      }
+      return [];
+    },
+    comments: async (parent) => {
+      if (parent.comments) {
+        return parent.comments;
+      }
+      return [];
+    },
+  },
+
+  Like: {
+    user: async (parent) => {
+      if (parent.user && typeof parent.user === 'object') {
+        return parent.user;
+      }
+      return null;
+    },
+    likedAt: (parent) => parent.likedAt,
+  },
+
+  Comment: {
+    id: (parent) => parent._id || parent.id,
+    user: async (parent) => {
+      if (parent.user && typeof parent.user === 'object') {
+        return parent.user;
+      }
+      return null;
+    },
+    commentedAt: (parent) => parent.commentedAt,
   }
 };
 

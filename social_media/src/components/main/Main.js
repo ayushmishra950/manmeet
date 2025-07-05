@@ -16,7 +16,6 @@ const Main = () => {
   const navigate = useNavigate();
   const [allPosts, setAllPosts] = useState([]);
   const [tokens,setTokens] = useState();
-  const[likePost,setLikePost] = useState();
 
   const scrollStories = (direction) => {
     const scrollAmount = 150;
@@ -37,6 +36,37 @@ const Main = () => {
   
     },[])
 
+    const handleCommentPost = async(id,text) => {
+         console.log(id,text);
+        try {
+        const query = ` mutation CommentPost($userId: ID!,$postId: ID!, $text:String!) { CommentPost(userId: $userId,postId: $postId, text:$text){
+        text
+      commentedAt
+      user {
+        name
+        username
+        profileImage
+      }
+
+        }}`;
+        const variables = {  userId: tokens.id, postId : id,text : text};
+
+        const response = await axios.post("http://localhost:5000/graphql", { query: query, variables: variables }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        console.log(response);        
+        // Refetch posts to get updated like status
+        // refetch();
+    }
+    catch (err) {
+      console.error(err);
+    }
+
+       
+  }
+
   const handleLikePost = async(id) => {
     
         try {
@@ -49,7 +79,8 @@ const Main = () => {
           }
         })
         console.log(response);
-        setLikePost(response.data.data.LikePost)
+        
+        // Refetch posts to get updated like status
     }
     catch (err) {
       console.error(err);
@@ -90,7 +121,7 @@ const Main = () => {
   };
 
   // Fetch posts from backend
-  const { data, loading, error } = useQuery(GET_ALL_POSTS);
+  const { data, loading, error, refetch } = useQuery(GET_ALL_POSTS);
   
 
   useEffect(() => {
@@ -98,6 +129,13 @@ const Main = () => {
       setAllPosts(data.getAllPosts); // initial set
     }
   }, [data]);
+
+  // Refetch data when tokens are available
+  useEffect(() => {
+    if (tokens?.id) {
+      refetch();
+    }
+  }, [tokens, refetch]);
 
   return (
     <div className="min-h-screen bg-gray-50 relative">
@@ -133,7 +171,8 @@ const Main = () => {
                 initialComments={post.comments?.length || 0}
                 onDelete={() => handleDeletePost(post.id)}
                 onLike={() => handleLikePost(post.id)}
-                isInitiallyLiked={post?.likes?.some(like => like.user === tokens.id)}
+                isInitiallyLiked={post?.likes?.some(like => like.user?.id === tokens?.id)}
+                onComment={(text) => handleCommentPost(post.id, text)}
               />
             ))}
           </div>

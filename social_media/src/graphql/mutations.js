@@ -19,6 +19,21 @@ export const GET_ALL_POSTS = gql`
       imageUrl
       createdBy
       createdAt
+      likes {
+        user {
+          id
+        }
+        likedAt
+      }
+      comments {
+        id
+        text
+        user {
+          id
+          name
+        }
+        commentedAt
+      }
     }
   }
 `;
