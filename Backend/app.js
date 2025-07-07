@@ -110,7 +110,7 @@ DB();
 
 const app = express();
 app.use(cookieParser());
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({ origin: 'https://manmeet-1.onrender.com', credentials: true }));
 app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 1 }));
 
 // Optional: GraphQL request logger
@@ -127,7 +127,7 @@ const httpServer = http.createServer(app);
 // Initialize socket.io
 const io = new Server(httpServer, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: 'https://manmeet-1.onrender.com',
     credentials: true,
   },
 });
@@ -189,7 +189,7 @@ async function startServer() {
   server.applyMiddleware({
     app,
     cors: {
-      origin: 'http://localhost:3000',
+      origin: 'https://manmeet-1.onrender.com',
       credentials: true,
     },
   });
