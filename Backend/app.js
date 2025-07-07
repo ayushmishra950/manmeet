@@ -194,6 +194,10 @@ async function startServer() {
     },
   });
 
+      app.get('/', (req, res) => {
+    res.send('🚀 Server is running...');
+  });
+
   httpServer.listen(process.env.PORT || 5000, () => {
     console.log(`🚀 Apollo GraphQL running at http://localhost:5000${server.graphqlPath}`);
     console.log(`🔌 Socket.io running on same server`);
