@@ -138,16 +138,11 @@ const GET_USER_INFO = gql`
 export default function UserInfo({setProfile, profile, isFollowed, setIsFollowed}) {
 
     const decodedUser = GetTokenFromCookie();
-    let pg = '686263ef57fd12f3b05a378d'
-
-  
-  
 
 const [followCounts, setFollowCounts] = useState(profile.stats.followers);
   const [followUnfollow, { loading }] = useMutation(FOLLOW_UNFOLLOW, {
     variables: { 
-      // id: decodedUser?.id.toString() ,
-      id: pg.toString()
+      id: decodedUser?.id.toString() ,
      },
     onCompleted: (data) => {
      const isNowFollowed = !isFollowed;

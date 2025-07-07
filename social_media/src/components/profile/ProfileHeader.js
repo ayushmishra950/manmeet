@@ -28,12 +28,13 @@ export default function ProfileHeader({ profile, updateProfile }) {
   const [name, setName] = useState(profile.name || "");
   const [username, setUsername] = useState(profile.username || "");
   const [caption, setCaption] = useState("");
-  const [image, setImage] = useState(null);
-  const [avatar, setAvatar] = useState(profile.avatar || profile.profileImage || "");
+  const [image, setImage] = useState(profile.avatar ||null);
+  const [avatar, setAvatar] = useState(profile.avatar || "");
   const [coverImage, setCoverImage] = useState(profile.cover || "");
   const [showSuccess, setShowSuccess] = useState(false);
   const [editProfile, { loading }] = useMutation(EDIT_PROFILE);
    const [user ,setUser] = useState();
+    
   useEffect(()=>{
         const decodedUser = GetTokenFromCookie();
       setUser(decodedUser);
