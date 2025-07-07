@@ -229,7 +229,7 @@ const resolvers = {
       domain : ".onrender.com",
       maxAge: 7 * 24 * 60 * 60 * 1000,
 });
-
+       user.token = token ;
       return user;
     },
 
