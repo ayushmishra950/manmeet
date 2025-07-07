@@ -611,7 +611,7 @@ const ChatList = ({ activeTab }) => {
         }
       `;
       const response = await axios.post(
-        "http://localhost:5000/graphql",
+        "https://manmeet.onrender.com/graphql",
         { query },
         {
           headers: {
@@ -655,7 +655,7 @@ const ChatList = ({ activeTab }) => {
     `;
 
       const response = await axios.post(
-        "http://localhost:5000/graphql",
+        "https://manmeet.onrender.com/graphql",
         { query },
         {
           headers: {
@@ -711,7 +711,7 @@ const ChatList = ({ activeTab }) => {
         message: text,
       }
       const response = await axios.post(
-        "http://localhost:5000/graphql",
+        "https://manmeet.onrender.com/graphql",
         { query , variables },
         {
           headers: {
