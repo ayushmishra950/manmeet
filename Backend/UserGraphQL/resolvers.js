@@ -206,6 +206,7 @@ const resolvers = {
          httpOnly: true,
          secure: true,              // production pe true hona chahiye
          sameSite: "None",          // cross-site cookie allow karta hai
+        domain : ".onrender.com",
          maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
 });
 
@@ -224,6 +225,7 @@ const resolvers = {
       httpOnly: true,
       secure: true,
       sameSite: "None",
+      domain : ".onrender.com",
       maxAge: 7 * 24 * 60 * 60 * 1000,
 });
 
@@ -234,6 +236,7 @@ const resolvers = {
      res.clearCookie("token", {
      httpOnly: true,
      secure: true,
+       domain : ".onrender.com",
      sameSite: "None",
 });
 
