@@ -185,15 +185,15 @@ async function startServer() {
   });
 
   await server.start();
-     server.applyMiddleware({ app });
+     // server.applyMiddleware({ app });
 
-  // server.applyMiddleware({
-  //   app,
-  //   cors: {
-  //     origin: 'https://manmeet-1.onrender.com',
-  //     credentials: true,
-  //   },
-  // });
+  server.applyMiddleware({
+    app,
+    cors: {
+      origin: 'https://manmeet-1.onrender.com',
+      credentials: true,
+    },
+  });
 
       app.get('/', (req, res) => {
     res.send('🚀 Server is running...');
