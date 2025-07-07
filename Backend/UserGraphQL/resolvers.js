@@ -202,7 +202,13 @@ const resolvers = {
       delete otpStore[email];
 
       const token = user_token(user);
-      res.cookie("token", token);
+      res.cookie("token", token, {
+         httpOnly: true,
+         secure: true,              // production pe true hona chahiye
+         sameSite: "None",          // cross-site cookie allow karta hai
+         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+});
+
 
       return user;
     },
@@ -214,12 +220,23 @@ const resolvers = {
       if (!isMatch) throw new Error('Invalid credentials');
 
       const token = user_token(user);
-      res.cookie("token", token);
+      res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+});
+
       return user;
     },
 
     logout: async (_, __, { res }) => {
-      res.clearCookie("token");
+     res.clearCookie("token", {
+     httpOnly: true,
+     secure: true,
+     sameSite: "None",
+});
+
       return "User logged out successfully";
     },
 
