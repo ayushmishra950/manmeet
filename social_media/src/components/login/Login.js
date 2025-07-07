@@ -46,6 +46,7 @@ const Login = () => {
           id
           name
           email
+          token
         }
       }
     `;
